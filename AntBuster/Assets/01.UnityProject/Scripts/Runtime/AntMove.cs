@@ -6,7 +6,6 @@ public class AntMove : MonoBehaviour
 {
     private float moveSpeed = default;
 
-    public int rotateSpeed;
     private Vector3 moveVelocy = Vector3.zero;
 
     [SerializeField]
@@ -14,17 +13,22 @@ public class AntMove : MonoBehaviour
 
     private RectTransform antRect;
 
-    private Transform target2;
+    private RectTransform target2;
 
     public Rigidbody2D rigidbodyAnt;
+
+    public CakeAct cakeAct = default;
+
+    public Animator antAnimator;
+
+    public bool cakeChk = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        moveSpeed = 4f;
+        moveSpeed = 80f;
         moveVelocy = Vector3.zero;
-        rotateSpeed = 10;
-
+        cakeChk = false;
 
         rigidbodyAnt = gameObject.GetComponentMust<Rigidbody2D>();
 
@@ -34,43 +38,77 @@ public class AntMove : MonoBehaviour
         GameObject noArea2 = gameBoard.FindChildObj("NoArea2");
 
         target1 = cake.GetComponentMust<RectTransform>();
-        target2 = noArea2.transform;
+        target2 = noArea2.GetComponentMust<RectTransform>();
 
         antRect = gameObject.GetComponentMust<RectTransform>();
+        cakeAct = cake.GetComponentMust<CakeAct>();
 
-        float angleDegree = 
-            Vector2.Angle(antRect.localPosition, target1.localPosition);
-
-        GFunc.Log($"{angleDegree} 값입니다.");
-
-        //Vector3 antLookCake = Quaternion.LookRotation(direction).eulerAngles;
-        //antLookCake.y = 0f;
-
-        //gameObject.transform.rotation = Quaternion.Euler(antLookCake);
+        antAnimator = gameObject.GetComponentMust<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if(target1 != null)
-        //{
-        //    Vector2 direction = (target1.anchoredPosition -
-        //        antRect.anchoredPosition).normalized;
 
-        //    Vector3 antLookCake =  Quaternion.LookRotation(direction, Vector3.forward).eulerAngles;
-        //    antLookCake.y = 0f;
-        //    //Quaternion.Euler(antLookCake);
+        if (cakeChk == true)
+        {
+            Vector2 direction_2 = (target2.localPosition - antRect.localPosition).normalized;
+
+            float localAngle2 = Mathf.Atan2(direction_2.y, direction_2.x) * Mathf.Rad2Deg - 90.0f;
 
 
-        //    gameObject.transform.rotation = Quaternion.Euler(antLookCake);
+            transform.rotation = Quaternion.AngleAxis(localAngle2, Vector3.forward);
 
-        //}
+            Vector3 addDirect2 = direction_2 * moveSpeed * Time.deltaTime;
 
-        //moveVelocy = new Vector3(0f, 0.1f, 0f);
-        //float xRota = gameObject.transform.rotation.x;
-        //gameObject.transform.rotation = new Quaternion(xRota, 0f, 0f, 0f);
+            transform.localPosition += addDirect2;
+        }
+        else
+        {
 
-        //transform.position += moveVelocy * moveSpeed * Time.deltaTime;
+            Vector2 direction_ = (target1.localPosition - antRect.localPosition).normalized;
+
+            float localAngle = Mathf.Atan2(direction_.y, direction_.x) * Mathf.Rad2Deg - 90.0f;
+
+
+            transform.rotation = Quaternion.AngleAxis(localAngle, Vector3.forward);
+
+            Vector3 addDirect = direction_ * moveSpeed * Time.deltaTime;
+
+            transform.localPosition += addDirect;
+
+        }
+
     }
 
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "Cake")
+        {
+            if (cakeAct.cakeCount == 0)
+            {
+                cakeChk = true;
+            }
+            else
+            {
+
+                cakeAct.OnMinusCake();
+
+                antAnimator.SetTrigger("GetCake");
+
+                cakeChk = true;
+            }
+        }
+
+        if(collision.tag == "AntCave")
+        {
+            if (cakeChk == true)
+            {
+                antAnimator.SetTrigger("ReStart");
+
+                cakeChk = false;
+            }
+        }
+    }
 }
