@@ -8,6 +8,7 @@ TagManager:
   - Cake
   - Ant
   - AntCave
+  - Bullet
   layers:
   - Default
   - TransparentFX

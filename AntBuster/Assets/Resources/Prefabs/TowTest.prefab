@@ -88,6 +88,8 @@ GameObject:
   - component: {fileID: 8642351983711151087}
   - component: {fileID: 842939249043879040}
   - component: {fileID: 7165888834098966519}
+  - component: {fileID: 7059846388096025753}
+  - component: {fileID: 6255569206828773818}
   m_Layer: 5
   m_Name: Cannon
   m_TagString: Untagged
@@ -153,3 +155,34 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7059846388096025753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3910850325622138897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfe0265fe214cb448a8e733ddf67acb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cannonBulletPrefab: {fileID: 7466798996080653374, guid: 45ffa3cf57fff994890ce8a83975aa32, type: 3}
+  spawnCannonBullet: 0
+  cannonBullets: []
+--- !u!58 &6255569206828773818
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3910850325622138897}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 200

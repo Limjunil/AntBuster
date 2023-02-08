@@ -14,7 +14,6 @@ public class AntSpawner : MonoBehaviour
     public Vector3 antSecondPos = default;
 
     public int createCount = default;
-    public bool corouEnd = false;
 
     public GameObject startCount = default;
     public int startChk = default;
@@ -26,7 +25,6 @@ public class AntSpawner : MonoBehaviour
         antFirstPos = new Vector3(-2000f, 0f, 0f);
         antSecondPos = new Vector3(-476f, 368f, 0f);
         createCount = 0;
-        corouEnd = false;
         startChk = 9;
 
         antSpawn = new GameObject[spawnCount];
@@ -49,10 +47,7 @@ public class AntSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (corouEnd == true)
-        {
-            StartCoroutine(CreateAntSix());
-        }
+        
     }
 
 
@@ -62,9 +57,9 @@ public class AntSpawner : MonoBehaviour
         {
             antSpawn[createCount].transform.localPosition = antSecondPos;
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(4f);
             createCount++;
-            //GFunc.Log("createCount");
+            GFunc.Log("createCount");
 
         }
 
@@ -72,7 +67,7 @@ public class AntSpawner : MonoBehaviour
         {
             StopCoroutine("CreateAntSix");
 
-            //GFunc.Log("sss");
+            GFunc.Log("sss");
         }
     }
 
@@ -93,8 +88,9 @@ public class AntSpawner : MonoBehaviour
 
             StopCoroutine("CountTen");
 
-            corouEnd = true;
-            GFunc.Log("sss");
+
+            StartCoroutine(CreateAntSix());
+            
         }
     }
 }

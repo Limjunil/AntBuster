@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class AntMove : MonoBehaviour
 {
@@ -23,12 +25,26 @@ public class AntMove : MonoBehaviour
 
     public bool cakeChk = false;
 
+
+    private Image antGuage = default;
+
+    public int currentHp = default;
+    public int maxHp = default;
+    public float antAmount = default;
+
+    public bool isAntDie = false;
+
     // Start is called before the first frame update
     void Start()
     {
+        currentHp = 100;
+        maxHp = 100;
+
+
         moveSpeed = 80f;
         moveVelocy = Vector3.zero;
         cakeChk = false;
+        isAntDie = false;
 
         rigidbodyAnt = gameObject.GetComponentMust<Rigidbody2D>();
 
@@ -44,11 +60,33 @@ public class AntMove : MonoBehaviour
         cakeAct = cake.GetComponentMust<CakeAct>();
 
         antAnimator = gameObject.GetComponentMust<Animator>();
+
+        GameObject antGuageImage = gameObject.FindChildObj("AntGuage");
+        GameObject realAntGuage = antGuageImage.FindChildObj("AntGuage_Front");
+        antGuage = realAntGuage.GetComponentMust<Image>();
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(isAntDie == true)
+        {
+            return;
+        }
+
+        antAmount = currentHp / (float)maxHp;
+        antGuage.fillAmount = antAmount;
+
+
+
+        if(antAmount <= 0)
+        {
+            DieAnt();
+
+
+        }
 
         if (cakeChk == true)
         {
@@ -81,6 +119,18 @@ public class AntMove : MonoBehaviour
 
     }
 
+    public void DieAnt()
+    {
+        // 개미의 피가 0 이하가 되면 실행
+
+        isAntDie = true;
+
+        antAnimator.SetTrigger("Die");
+
+        StartCoroutine(ReStartAnt());
+
+    }
+
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
@@ -110,5 +160,17 @@ public class AntMove : MonoBehaviour
                 cakeChk = false;
             }
         }
+    }   // OnTriggerEnter2D()
+
+
+    public IEnumerator ReStartAnt()
+    {
+        yield return new WaitForSeconds(2f);
+
+        gameObject.transform.localPosition = new Vector3(-476f, 368f, 0f);
+        antAnimator.SetTrigger("ReStart");
+        isAntDie = false;
+
+        StopCoroutine("ReStartAnt");
     }
 }
