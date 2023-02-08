@@ -34,6 +34,8 @@ public class AntMove : MonoBehaviour
 
     public bool isAntDie = false;
 
+    public GameManager gameManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -65,6 +67,8 @@ public class AntMove : MonoBehaviour
         GameObject realAntGuage = antGuageImage.FindChildObj("AntGuage_Front");
         antGuage = realAntGuage.GetComponentMust<Image>();
 
+        GameObject gameManager_ = GFunc.GetRootObj("GameManager");
+        gameManager = gameManager_.GetComponentMust<GameManager>();
 
     }
 
@@ -83,9 +87,14 @@ public class AntMove : MonoBehaviour
 
         if(antAmount <= 0)
         {
+            if (cakeChk == true)
+            {
+                cakeAct.OnPlusCake();
+
+                cakeChk = false;
+            }
+
             DieAnt();
-
-
         }
 
         if (cakeChk == true)
@@ -136,7 +145,10 @@ public class AntMove : MonoBehaviour
     {
         if(collision.tag == "Bullet")
         {
+            if(currentHp <= 0) { return; }
             currentHp -= 10;
+
+
         }
 
         if(collision.tag == "Cake")
@@ -170,10 +182,11 @@ public class AntMove : MonoBehaviour
 
     public IEnumerator ReStartAnt()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         gameObject.transform.localPosition = new Vector3(-476f, 368f, 0f);
         antAnimator.SetTrigger("ReStart");
+        currentHp = 100;
         isAntDie = false;
 
         StopCoroutine("ReStartAnt");

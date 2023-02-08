@@ -29,7 +29,7 @@ public class CannonBullet : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Ant")
+        if(collision.tag == "Ant" || collision.tag == "Wall")
         {
             gameObject.SetActive(false);
         }

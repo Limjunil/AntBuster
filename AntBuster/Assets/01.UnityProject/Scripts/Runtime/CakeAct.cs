@@ -68,4 +68,9 @@ public class CakeAct : MonoBehaviour
     {
         cakeCount--;
     }
+
+    public void OnPlusCake()
+    {
+        cakeCount++;
+    }
 }

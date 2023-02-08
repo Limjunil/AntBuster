@@ -9,6 +9,8 @@ TagManager:
   - Ant
   - AntCave
   - Bullet
+  - Wall
+  - Cannon
   layers:
   - Default
   - TransparentFX

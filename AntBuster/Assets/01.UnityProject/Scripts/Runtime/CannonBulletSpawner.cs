@@ -105,16 +105,6 @@ public class CannonBulletSpawner : MonoBehaviour
                 timeAfterSpawn = 0;
 
 
-
-                //Vector2 direction_ = (target.localPosition - gameObject.transform.localPosition).normalized;
-
-                //float localAngle = Mathf.Atan2(direction_.y, direction_.x) * Mathf.Rad2Deg;
-
-
-                //transform.rotation = Quaternion.AngleAxis(localAngle, Vector3.forward);
-
-
-
                 cannonBullets[bulletUseCnt].transform.position =
                     gameObject.transform.position;
 
@@ -123,7 +113,7 @@ public class CannonBulletSpawner : MonoBehaviour
                     transform.position.y - target.position.y);
 
                 float angle = Mathf.Atan2(direction.y, direction.x) *
-                    Mathf.Rad2Deg +180;
+                    Mathf.Rad2Deg + 180;
 
 
                 Quaternion angleAxis = Quaternion.AngleAxis(
