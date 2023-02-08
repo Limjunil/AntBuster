@@ -134,6 +134,11 @@ public class AntMove : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
+        if(collision.tag == "Bullet")
+        {
+            currentHp -= 10;
+        }
+
         if(collision.tag == "Cake")
         {
             if (cakeAct.cakeCount == 0)

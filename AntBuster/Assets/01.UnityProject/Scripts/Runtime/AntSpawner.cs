@@ -34,6 +34,8 @@ public class AntSpawner : MonoBehaviour
         {
             antSpawn[i] = Instantiate(antPrefab, antFirstPos,
                 Quaternion.identity, gameObject.transform);
+
+            antSpawn[i].name = $"AntClone{i}";
         }
 
         GameObject gameObjs = GFunc.GetRootObj("GameObjs");

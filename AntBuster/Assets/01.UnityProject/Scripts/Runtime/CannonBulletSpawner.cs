@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class CannonBulletSpawner : MonoBehaviour
 {
@@ -27,19 +28,21 @@ public class CannonBulletSpawner : MonoBehaviour
 
     private float shortDis = default;
 
+    private int rotateSpeed = default;
+
     // Start is called before the first frame update
     void Start()
     {
         timeAfterSpawn = 0;
         bulletUseCnt = 0;
+        rotateSpeed = 100;
 
-        spawnCannonBullet = 0.3f;
+        spawnCannonBullet = 1f;
 
         bulletCount = 20;
         cannonBullets = new GameObject[bulletCount];
         antCannonChk = new Vector3[6];
 
-        //target = GameObject.Find("Ant").transform;
 
         Vector3 cannonBulletFirstPos = new Vector3(-1000f, 0, 0);
 
@@ -66,7 +69,7 @@ public class CannonBulletSpawner : MonoBehaviour
 
     }
 
-    public void OnTriggerEnter2D(Collider2D collision)
+    public void OnTriggerStay2D(Collider2D collision)
     {
         if(collision.tag == "Ant")
         {
@@ -78,45 +81,56 @@ public class CannonBulletSpawner : MonoBehaviour
                 target = targetList[0].transform;
 
                 // 첫 번째를 기준으로 대상 잡기
-                shortDis = Vector3.Distance(gameObject.transform.localPosition,
-                    targetList[0].transform.localPosition);
+                shortDis = Vector3.Distance(gameObject.transform.position,
+                    targetList[0].transform.position);
 
-                foreach(GameObject found in targetList)
+                foreach (GameObject found in targetList)
                 {
                     float Distance = Vector3.Distance(
-                        gameObject.transform.localPosition,
-                        found.transform.localPosition);
+                        gameObject.transform.position,
+                        found.transform.position);
 
-                    if(Distance < shortDis)
+                    if (Distance < shortDis)
                     {
                         target = found.transform;
                         shortDis = Distance;
                     }
                 }
 
-                // 거리 계산 잘하는 지 확인
-                GFunc.Log($"{target} 이며, {shortDis} 가 가장 짧습니다.");
+                //거리 계산 잘하는 지 확인
+                GFunc.Log($"{gameObject.transform.parent.name} : {target.name} 이며, {shortDis} 가 가장 짧습니다.");
 
 
                 cannonBullets[bulletUseCnt].SetActive(true);
-
                 timeAfterSpawn = 0;
 
-                cannonBullets[bulletUseCnt].transform.localPosition =
-                    gameObject.transform.localPosition;
 
-                Vector2 direction = (target.transform.localPosition -
-                    gameObject.transform.localPosition).normalized;
 
-                float localAngle = Mathf.Atan2(direction.y, direction.x) *
-                    Mathf.Rad2Deg;
+                //Vector2 direction_ = (target.localPosition - gameObject.transform.localPosition).normalized;
+
+                //float localAngle = Mathf.Atan2(direction_.y, direction_.x) * Mathf.Rad2Deg;
+
+
+                //transform.rotation = Quaternion.AngleAxis(localAngle, Vector3.forward);
+
+
+
+                cannonBullets[bulletUseCnt].transform.position =
+                    gameObject.transform.position;
+
+                Vector2 direction = new Vector2(
+                    transform.position.x - target.position.x,
+                    transform.position.y - target.position.y);
+
+                float angle = Mathf.Atan2(direction.y, direction.x) *
+                    Mathf.Rad2Deg +180;
 
 
                 Quaternion angleAxis = Quaternion.AngleAxis(
-                    localAngle - 90f, Vector3.forward);
+                    angle - 90f, Vector3.forward);
 
                 Quaternion rotation = Quaternion.Slerp(transform.rotation,
-                    angleAxis, 0.3f);
+                    angleAxis, rotateSpeed * Time.deltaTime);
 
                 transform.rotation = rotation;
                 cannonBullets[bulletUseCnt].transform.rotation = rotation;
