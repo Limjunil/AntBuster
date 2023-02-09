@@ -40,7 +40,12 @@ public class GameManager : MonoBehaviour
         MoneyTxtObj = scores.FindChildObj("Money");
         LevelTxtObj = scores.FindChildObj("Level");
 
-        GameObject GameOver = uiObjs_.FindChildObj("GameOver");
+        GameObject topUi_ = GFunc.GetRootObj("TopUi");
+
+
+        GameObject GameOver = topUi_.FindChildObj("GameOver");
+
+
 
         GameOverTxt = GameOver.GetComponentMust<Transform>();
 
