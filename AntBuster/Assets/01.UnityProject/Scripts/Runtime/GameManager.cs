@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     private GameObject LevelTxtObj = default;
 
+    private Transform GameOverTxt = default;
+
     private float pointNow = default;
 
     private float moneyNow = default;
@@ -38,13 +40,29 @@ public class GameManager : MonoBehaviour
         MoneyTxtObj = scores.FindChildObj("Money");
         LevelTxtObj = scores.FindChildObj("Level");
 
-        SetLevel();
+        GameObject GameOver = uiObjs_.FindChildObj("GameOver");
+
+        GameOverTxt = GameOver.GetComponentMust<Transform>();
+
+        GameOverTxt.localScale = new Vector3(0.0001f, 0.0001f, 0.0001f);
+
+        PlayerPrefs.SetFloat("pointNow", pointNow);
+
 
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (isGameOver == true)
+        {
+            GameOverTxt.localScale = Vector3.one;
+            Time.timeScale = 0F;
+        }
+
+        SetLevel();
+
         SetPoint();
 
         SetMoney();
@@ -88,7 +106,6 @@ public class GameManager : MonoBehaviour
             level++;
         }
 
-        SetLevel();
     }
 
     public void SetLevel()
@@ -98,5 +115,10 @@ public class GameManager : MonoBehaviour
         float levelVal = PlayerPrefs.GetInt("level");
 
         GFunc.SetTmpText(LevelTxtObj, $"{levelVal}");
+    }
+
+    public void IsGameOver()
+    {
+        isGameOver = true;
     }
 }

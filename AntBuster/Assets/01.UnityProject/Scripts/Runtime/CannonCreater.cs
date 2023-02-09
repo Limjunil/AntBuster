@@ -34,6 +34,17 @@ public class CannonCreater : MonoBehaviour
 
     private void OnMouseDown()
     {
+        float playerMoney = PlayerPrefs.GetFloat("moneyNow");
+
+        if (30 <= playerMoney)
+        {
+            playerMoney -= 30f;
+
+            PlayerPrefs.SetFloat("moneyNow", playerMoney);
+        }
+        else { return; }
+
+
         isClicked = true;
         CannonNormalCreateAlpha = Instantiate(CannonNormalAlpha, transform);
 
@@ -61,6 +72,7 @@ public class CannonCreater : MonoBehaviour
             CannonNormalCreateAlpha.transform.position.y < -2.5 
             )
         {
+            OnReturnMoney();
             Destroy(CannonNormalCreateAlpha);
 
             return;
@@ -69,6 +81,19 @@ public class CannonCreater : MonoBehaviour
         Instantiate(CannonNormalPrefab, CannonNormalCreateAlpha.transform.position,
             Quaternion.identity, gameBoard.transform);
 
-        GFunc.Log($"{CannonNormalAlpha.transform.position} 월드 포지션 값");
+        //GFunc.Log($"{CannonNormalAlpha.transform.position} 월드 포지션 값");
     }
+
+    public void OnDestroyAlpha()
+    {
+        Destroy(CannonNormalCreateAlpha);
+    }
+
+    public void OnReturnMoney()
+    {
+        float playerMoney = PlayerPrefs.GetFloat("moneyNow");
+        playerMoney += 30;
+        PlayerPrefs.SetFloat("moneyNow", playerMoney);
+    }
+
 }

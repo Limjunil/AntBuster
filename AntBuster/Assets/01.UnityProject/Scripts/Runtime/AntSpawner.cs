@@ -18,6 +18,7 @@ public class AntSpawner : MonoBehaviour
     public GameObject startCount = default;
     public int startChk = default;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -95,4 +96,6 @@ public class AntSpawner : MonoBehaviour
             
         }
     }
+
+
 }

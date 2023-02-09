@@ -5,3 +5,4 @@ Make a Ant Buster
 2023-02-07 / v0.0.1 / Add Ant    
 2023-02-08 / v0.0.2 / Add Cannon    
 2023-02-09 / v0.0.3 / Add Score mini    
+2023-02-09 / v0.0.4 / Add GameOver and Cannon Detail    

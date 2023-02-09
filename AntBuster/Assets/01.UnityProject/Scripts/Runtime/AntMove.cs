@@ -25,6 +25,8 @@ public class AntMove : MonoBehaviour
 
     public bool cakeChk = false;
 
+    private bool lastCake = false;
+
 
     private Image antGuage = default;
 
@@ -34,19 +36,23 @@ public class AntMove : MonoBehaviour
 
     public bool isAntDie = false;
 
+
+    public int antLevel = default;
+
     public GameManager gameManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        currentHp = 100;
-        maxHp = 100;
+        currentHp = 0;
+        maxHp = 0;
 
 
         moveSpeed = 80f;
         moveVelocy = Vector3.zero;
         cakeChk = false;
         isAntDie = false;
+        lastCake = false;
 
         rigidbodyAnt = gameObject.GetComponentMust<Rigidbody2D>();
 
@@ -70,6 +76,8 @@ public class AntMove : MonoBehaviour
         GameObject gameManager_ = GFunc.GetRootObj("GameManager");
         gameManager = gameManager_.GetComponentMust<GameManager>();
 
+        OnAntHpSet();
+
     }
 
     // Update is called once per frame
@@ -87,12 +95,6 @@ public class AntMove : MonoBehaviour
 
         if(antAmount <= 0)
         {
-            if (cakeChk == true)
-            {
-                cakeAct.OnPlusCake();
-
-                cakeChk = false;
-            }
 
             DieAnt();
         }
@@ -134,7 +136,26 @@ public class AntMove : MonoBehaviour
 
         isAntDie = true;
 
+        if(cakeChk == true)
+        {
+            cakeAct.OnPlusCake();
+
+            cakeChk = false;
+        }
+
+        if (lastCake == true)
+        {
+
+            lastCake = false;
+        }
+        
+        
+
         antAnimator.SetTrigger("Die");
+
+        gameManager.OnDieAntCnt();
+
+        OnPlayerMoney();
 
         StartCoroutine(ReStartAnt());
 
@@ -146,7 +167,7 @@ public class AntMove : MonoBehaviour
         if(collision.tag == "Bullet")
         {
             if(currentHp <= 0) { return; }
-            currentHp -= 10;
+            currentHp -= 1;
 
 
         }
@@ -159,6 +180,10 @@ public class AntMove : MonoBehaviour
             }
             else
             {
+                if (cakeAct.cakeCount == 1)
+                {
+                    lastCake = true;
+                }
 
                 cakeAct.OnMinusCake();
 
@@ -172,6 +197,12 @@ public class AntMove : MonoBehaviour
         {
             if (cakeChk == true)
             {
+                if(lastCake == true)
+                {
+                    GFunc.Log($"{cakeAct.cakeCount} 가 0개라서 게임오버");
+                    gameManager.IsGameOver();
+                }
+
                 antAnimator.SetTrigger("ReStart");
 
                 cakeChk = false;
@@ -189,6 +220,38 @@ public class AntMove : MonoBehaviour
         currentHp = 100;
         isAntDie = false;
 
+        OnGetLevelAnt();
+
+        OnAntHpSet();
+
         StopCoroutine("ReStartAnt");
+    }
+
+    public void OnAntHpSet()
+    {
+        int playerLevel = PlayerPrefs.GetInt("level");
+
+        currentHp = (int)(Mathf.Pow(1.1f, playerLevel) * 4 - 1);
+
+        maxHp = currentHp;
+
+        GFunc.Log($"{gameObject.name}의 체력은 : {maxHp}");
+
+    }
+
+
+    public void OnGetLevelAnt()
+    {
+        antLevel++;
+    }   // OnGetLevelAnt()
+
+
+    public void OnPlayerMoney()
+    {
+        float PlayerMoney = PlayerPrefs.GetFloat("moneyNow");
+
+        PlayerMoney += antLevel;
+
+        PlayerPrefs.SetFloat("moneyNow", PlayerMoney);
     }
 }
