@@ -62,7 +62,7 @@ public class AntSpawner : MonoBehaviour
 
             yield return new WaitForSeconds(4f);
             createCount++;
-            GFunc.Log("createCount");
+            //GFunc.Log("createCount");
 
         }
 
@@ -70,7 +70,7 @@ public class AntSpawner : MonoBehaviour
         {
             StopCoroutine("CreateAntSix");
 
-            GFunc.Log("sss");
+            // GFunc.Log("sss");
         }
     }
 
@@ -78,7 +78,7 @@ public class AntSpawner : MonoBehaviour
     {
         while (-1 < startChk)
         {
-            GFunc.SetTmpText(startCount, $"{startChk}");
+            //GFunc.SetTmpText(startCount, $"{startChk}");
 
             yield return new WaitForSeconds(1f);
 

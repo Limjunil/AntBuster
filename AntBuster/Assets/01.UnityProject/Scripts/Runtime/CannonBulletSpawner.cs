@@ -98,7 +98,7 @@ public class CannonBulletSpawner : MonoBehaviour
                 }
 
                 //거리 계산 잘하는 지 확인
-                GFunc.Log($"{gameObject.transform.parent.name} : {target.name} 이며, {shortDis} 가 가장 짧습니다.");
+                //GFunc.Log($"{gameObject.transform.parent.name} : {target.name} 이며, {shortDis} 가 가장 짧습니다.");
 
 
                 cannonBullets[bulletUseCnt].SetActive(true);

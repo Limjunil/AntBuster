@@ -14,6 +14,10 @@ public class CannonCreater : MonoBehaviour
 
     public GameObject gameBoard = default;
 
+    public OutCannon outCannon = default;
+
+    public List<GameObject> cannonList = default;
+
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +26,8 @@ public class CannonCreater : MonoBehaviour
 
         GameObject gameObjs = GFunc.GetRootObj("GameObjs");
         gameBoard = gameObjs.FindChildObj("GameBoard");
+
+        cannonList = new List<GameObject>();
 
     }
 
@@ -69,8 +75,7 @@ public class CannonCreater : MonoBehaviour
         isClicked = false;
 
         if (CannonNormalCreateAlpha.transform.position.x < -4.5 ||
-            CannonNormalCreateAlpha.transform.position.y < -2.5 
-            )
+            CannonNormalCreateAlpha.transform.position.y < -2.5 )
         {
             OnReturnMoney();
             Destroy(CannonNormalCreateAlpha);
@@ -78,10 +83,21 @@ public class CannonCreater : MonoBehaviour
             return;
         }
 
+        //for(int i = 0; i < cannonList.Count; i++)
+        //{
+        //    cannonList[i].transform.position
+        //}
+
+        GameObject tempCannon =
         Instantiate(CannonNormalPrefab, CannonNormalCreateAlpha.transform.position,
             Quaternion.identity, gameBoard.transform);
 
-        //GFunc.Log($"{CannonNormalAlpha.transform.position} 월드 포지션 값");
+        cannonList.Add(tempCannon);
+
+        //outCannon = CannonNormalPrefab.GetComponentMust<OutCannon>();
+
+        //outCannon.OnSetting();
+
     }
 
     public void OnDestroyAlpha()
