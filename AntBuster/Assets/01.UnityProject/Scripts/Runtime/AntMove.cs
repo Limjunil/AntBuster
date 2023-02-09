@@ -199,7 +199,7 @@ public class AntMove : MonoBehaviour
             {
                 if(lastCake == true)
                 {
-                    GFunc.Log($"{cakeAct.cakeCount} 가 0개라서 게임오버");
+                    //GFunc.Log($"{cakeAct.cakeCount} 가 0개라서 게임오버");
                     gameManager.IsGameOver();
                 }
 
@@ -235,7 +235,7 @@ public class AntMove : MonoBehaviour
 
         maxHp = currentHp;
 
-        GFunc.Log($"{gameObject.name}의 체력은 : {maxHp}");
+        //GFunc.Log($"{gameObject.name}의 체력은 : {maxHp}");
 
     }
 

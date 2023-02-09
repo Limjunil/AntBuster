@@ -78,7 +78,7 @@ public class AntSpawner : MonoBehaviour
     {
         while (-1 < startChk)
         {
-            //GFunc.SetTmpText(startCount, $"{startChk}");
+            GFunc.SetTmpText(startCount, $"{startChk}");
 
             yield return new WaitForSeconds(1f);
 
